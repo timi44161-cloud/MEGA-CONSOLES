@@ -1,0 +1,1828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mega Consoles - Ultimate Gaming Hub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0f0f, #1a1a1a, #2d2d2d);
+            color: white;
+            min-height: 100vh;
+        }
+        
+        .login-screen, .setup-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1e1e1e, #2d2d2d);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .login-form, .setup-form {
+            background: rgba(0,0,0,0.8);
+            padding: 40px;
+            border-radius: 20px;
+            border: 2px solid #ff6b35;
+            backdrop-filter: blur(15px);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+        }
+        
+        .login-form h1, .setup-form h1 {
+            color: #ff6b35;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #ccc;
+        }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-size: 16px;
+        }
+        
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: 2px solid #ff6b35;
+            background: rgba(255,255,255,0.15);
+        }
+        
+        .btn {
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(255,107,53,0.4);
+        }
+        
+        .game-selection {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .game-option {
+            background: rgba(255,255,255,0.1);
+            border: 2px solid transparent;
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .game-option:hover, .game-option.selected {
+            border-color: #ff6b35;
+            background: rgba(255,107,53,0.2);
+        }
+        
+        .main-interface {
+            display: none;
+        }
+        
+        .header {
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        
+        .logo {
+            font-size: 1.8em;
+            font-weight: bold;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .trophy-count {
+            background: rgba(255,215,0,0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            border: 1px solid gold;
+        }
+        
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            gap: 20px;
+            padding: 20px;
+        }
+        
+        .sidebar {
+            width: 250px;
+            background: rgba(0,0,0,0.4);
+            border-radius: 15px;
+            padding: 20px;
+            height: fit-content;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .nav-item {
+            display: block;
+            color: white;
+            padding: 15px;
+            text-decoration: none;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+            cursor: pointer;
+        }
+        
+        .nav-item:hover, .nav-item.active {
+            background: rgba(255,107,53,0.2);
+            border-left-color: #ff6b35;
+            transform: translateX(5px);
+        }
+        
+        .main-content {
+            flex: 1;
+            background: rgba(0,0,0,0.4);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .welcome-section {
+            margin-bottom: 30px;
+        }
+        
+        .welcome-section h2 {
+            color: #ff6b35;
+            margin-bottom: 10px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .stat-card {
+            background: rgba(255,255,255,0.05);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #ff6b35;
+        }
+        
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .game-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(255,107,53,0.3);
+            border-color: #ff6b35;
+        }
+        
+        .game-icon {
+            font-size: 3em;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .game-info h3 {
+            color: #ff6b35;
+            margin-bottom: 5px;
+        }
+        
+        .game-progress {
+            background: rgba(0,0,0,0.3);
+            height: 8px;
+            border-radius: 4px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b35, #f7931e);
+            transition: width 0.3s ease;
+        }
+        
+        .context-menu {
+            position: absolute;
+            background: rgba(0,0,0,0.9);
+            border: 1px solid #ff6b35;
+            border-radius: 8px;
+            padding: 10px 0;
+            display: none;
+            z-index: 100;
+            min-width: 150px;
+        }
+        
+        .context-item {
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        .context-item:hover {
+            background: rgba(255,107,53,0.2);
+        }
+        .achievements-section {
+            display: none;
+        }
+        
+        .achievement-item {
+            display: flex;
+            align-items: center;
+            background: rgba(255,255,255,0.05);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border-left: 4px solid gold;
+        }
+        
+        .achievement-icon {
+            font-size: 2em;
+            margin-right: 15px;
+        }
+        .settings-section {
+            display: none;
+        }
+        .settings-group {
+            background: rgba(255,255,255,0.05);
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 12px;
+        }
+        .settings-group h3 {
+            color: #ff6b35;
+            margin-bottom: 15px;
+        }
+        
+        
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+        .settings-tab.active {
+    background: yellow;
+    color: black;
+    font-weight: bold;
+}
+
+        
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 25px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .toggle-switch.active {
+            background: #ff6b35;
+        }
+        
+        .toggle-switch::before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            top: 2.5px;
+            left: 2.5px;
+            transition: all 0.3s ease;
+        }
+        
+        .toggle-switch.active::before {
+            transform: translateX(25px);
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.9);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            border-left: 4px solid #ff6b35;
+            z-index: 1001;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        
+
+        .tab-button {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab-button.active {
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+        }
+        #backButton {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background: #ff6b35;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  z-index: 1000;
+  transition: all 0.3s ease;
+  
+}
+
+#backButton.hidden {
+  display: none;
+}
+#backButton:hover {
+  transform: scale(1.05);
+  background: #f7931e;
+}
+
+
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-form">
+            <h1>🎮 MEGA CONSOLES</h1>
+            <p>Welcome to the Ultimate Gaming Hub</p>
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" placeholder="Enter your gamer tag">
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="Enter your email">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Create a password">
+                <div class="form-group" style="display: flex; align-items: center; gap: 10px;">
+    <input type="checkbox" id="rememberMe">
+    <label for="rememberMe"  style="margin: 0; color: #ccc;">Remember Me</label>
+</div>
+
+            </div>
+            <button class="btn" onclick="completeLogin()">Start Gaming</button>
+            <p style="margin-top: 20px; opacity: 0.7;">
+                Already have an account? <a href="#" style="color: #ff6b35;">Sign In</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- First-time Setup Screen -->
+    <div class="setup-screen hidden" id="setupScreen">
+        <div class="setup-form">
+            <h1>🎯 Tell Us Your Gaming Style</h1>
+            <p>Select games you love so we can personalize your experience</p>
+            <div class="game-selection" id="gameSelection">
+                <div class="game-option" data-game="action">🔫 Action</div>
+                <div class="game-option" data-game="racing">🏎️ Racing</div>
+                <div class="game-option" data-game="sports">⚽ Sports</div>
+                <div class="game-option" data-game="rpg">⚔️ RPG</div>
+                <div class="game-option" data-game="strategy">🧩 Strategy</div>
+                <div class="game-option" data-game="adventure">🗺️ Adventure</div>
+                <div class="game-option" data-game="fighting">🥊 Fighting</div>
+                <div class="game-option" data-game="simulation">🏗️ Simulation</div>
+            </div>
+            <button class="btn" onclick="completeSetup()">Complete Setup</button>
+        </div>
+    </div>
+
+    <!-- Main Interface -->
+    <div class="main-interface" id="mainInterface">
+        <header class="header">
+            <div class="logo">🎮 MEGA CONSOLES</div>
+            <div class="user-info">
+                <div class="trophy-count">🏆 <span id="trophyCount">0</span></div>
+                <div>Welcome, <span id="displayUsername">Player</span></div>
+                <button class="btn" onclick="logout()" style="padding: 8px 15px; font-size: 14px;">Logout</button>
+            </div>
+        </header>
+       
+
+        <div class="container">
+            <nav class="sidebar">
+                <div class="nav-item active" onclick="showSection('home')">🏠 Home Dashboard</div>
+                <div class="nav-item" onclick="showSection('games')">🎯 Your Games</div>
+                <div class="nav-item" onclick="showSection('achievements')">🏆 Achievements</div>
+                <div class="nav-item" onclick="showSection('store')">🛒 Mega Store</div>
+                <div class="nav-item" onclick="showSection('creator')">🎬 Become a Creator</div>
+                <div class="nav-item" onclick="showSection('social')">👥 Social</div>
+                <div class="nav-item" onclick="showSection('settings')">⚙️ Customize Console</div>
+            </nav>
+
+            <main class="main-content">
+                <!-- Home Section -->
+                <div id="home-content">
+                    <div class="welcome-section">
+                        <h2>Welcome back, <span id="welcomeUsername">Player</span>!</h2>
+                        <p>Ready to continue your gaming journey?</p>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number" id="gamesPlayed">12</div>
+                            <div>Games Played</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="hoursPlayed">247</div>
+                            <div>Hours Played</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="achievementsUnlocked">45</div>
+                            <div>Achievements</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="friendsOnline">8</div>
+                            <div>Friends Online</div>
+                        </div>
+                    </div>
+
+                    <h3>🎮 Recently Played</h3>
+                    <div class="games-grid" id="recentGames">
+                        <!-- Games will be populated by JavaScript -->
+                    </div>
+
+                    <h3>🏆 Recent Achievements</h3>
+                    <div id="recentAchievements">
+                        <!-- Achievements will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Games Section -->
+                <div id="games-content" class="hidden">
+                    <h2>🎯 Your Game Library</h2>
+                    <div class="games-grid" id="allGames">
+                        <!-- All games will be populated here -->
+                    </div>
+                </div>
+
+                <!-- Achievements Section -->
+                <div id="achievements-content" class="hidden">
+                    <h2>🏆 Achievements Hub</h2>
+                    
+                    <div style="display: flex; gap: 15px; margin: 20px 0;">
+                        <button class="tab-button active" onclick="showAchievementTab('unlocked')">✅ Unlocked</button>
+                        <button class="tab-button " onclick="showAchievementTab('locked')">🔒 Locked</button>
+                        <button class="tab-button " onclick="showAchievementTab('recent')">⭐ Recent</button>
+                        <button class="tab-button " onclick="showAchievementTab('games')">🎮 By Games</button>
+                    </div>
+
+                    <div id="achievement-unlocked" class="achievement-content">
+                        <div id="achievementsList">
+                            <!-- Unlocked achievements -->
+                        </div>
+                    </div>
+
+                    <div id="achievement-locked" class="achievement-content hidden">
+                        <div id="lockedAchievementsList">
+                            <!-- Locked achievements -->
+                        </div>
+                    </div>
+
+                    <div id="achievement-recent" class="achievement-content hidden">
+                        <div id="recentAchievementsList">
+                            <!-- Recent achievements -->
+                        </div>
+                    </div>
+
+                    <div id="achievement-games" class="achievement-content hidden">
+                        <div id="gameAchievementsList">
+                            <!-- Game-specific achievements -->
+                        </div>
+                    </div>
+                </div>
+                <!-- Store Section -->
+                <div id="store-content" class="hidden">
+                    <h2>🛒 Mega Store</h2>
+                    <p>Games, mods, themes, and exclusive content</p>
+                    
+
+                    
+                    <div class="store-categories" style="display: flex; gap: 15px; margin: 20px 0; flex-wrap: wrap;">
+                        <button class="btn store-tab active" onclick="showStoreCategory('games')" style="padding: 10px 20px;">🎮 Games</button>
+                        <button class="btn store-tab" onclick="showStoreCategory('mods')" style="padding: 10px 20px;">🔧 Mods</button>
+                        <button class="btn store-tab" onclick="showStoreCategory('themes')" style="padding: 10px 20px;">🎨 Themes</button>
+                        <button class="btn store-tab" onclick="showStoreCategory('exclusive')" style="padding: 10px 20px;">⭐ Exclusive</button>
+                    </div>
+                    <!-- Mods Section (Initially Hidden) -->
+<div id="modsSection" class="hidden">
+    <button class="btn" style="margin-bottom:15px;" onclick="goBackToStore()">⬅ Back to Store</button>
+    <h3>🔧 Game Mods</h3>
+    <p>Here you can manage and apply mods for your games.</p>
+</div>
+<div id="store-content" class="hidden">
+   <!-- normal store stuff here -->
+</div>
+
+
+                    <div id="store-games" class="store-category">
+                        <h3>🔥 Popular Games</h3>
+                        <div class="games-grid">
+                            <div class="game-card">
+                                <div class="game-icon">🏗️</div>
+                                <div class="game-info">
+                                    <h3>Roblox</h3>
+                                    <p>Build, play, and create with millions</p>
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                                        <span style="color: #10b981; font-weight: bold;">FREE</span>
+                                        <button class="btn" onclick="downloadGame('Roblox')" style="padding: 5px 15px; font-size: 12px;">Download</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="game-card">
+                                <div class="game-icon">🚗</div>
+                                <div class="game-info">
+                                    <h3>GTA V</h3>
+                                    <p>Open world crime adventure</p>
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                                        <span style="color: #ff6b35; font-weight: bold;">₦15,000</span>
+                                        <button class="btn" onclick="downloadGame('GTA V')" style="padding: 5px 15px; font-size: 12px;">Buy Now</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="game-card">
+                                <div class="game-icon">⛏️</div>
+                                <div class="game-info">
+                                    <h3>Minecraft</h3>
+                                    <p>Build and explore infinite worlds</p>
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                                        <span style="color: #ff6b35; font-weight: bold;">₦8,500</span>
+                                        <button class="btn" onclick="downloadGame('Minecraft')" style="padding: 5px 15px; font-size: 12px;">Buy Now</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="game-card">
+                                <div class="game-icon">🔫</div>
+                                <div class="game-info">
+                                    <h3>Fortnite</h3>
+                                    <p>Battle royale phenomenon</p>
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                                        <span style="color: #10b981; font-weight: bold;">FREE</span>
+                                        <button class="btn" onclick="downloadGame('Fortnite')" style="padding: 5px 15px; font-size: 12px;">Download</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="game-card">
+                                <div class="game-icon">⚔️</div>
+                                <div class="game-info">
+                                    <h3>Elden Ring</h3>
+                                    <p>Epic fantasy adventure</p>
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                                        <span style="color: #ff6b35; font-weight: bold;">₦25,000</span>
+                                        <button class="btn" onclick="downloadGame('Elden Ring')" style="padding: 5px 15px; font-size: 12px;">Buy Now</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="game-card">
+                                <div class="game-icon">🏀</div>
+                                <div class="game-info">
+                                    <h3>NBA 2K24</h3>
+                                    <p>Ultimate basketball experience</p>
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                                        <span style="color: #ff6b35; font-weight: bold;">₦20,000</span>
+                                        <button class="btn" onclick="downloadGame('NBA 2K24')" style="padding: 5px 15px; font-size: 12px;">Buy Now</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="store-mods" class="store-category hidden">
+                        <h3>🔧 Game Modifications</h3>
+                        <div class="games-grid">
+                            <div class="game-card">
+                                <div class="game-icon">🎨</div>
+                                <div class="game-info">
+                                    <h3>Ultra Graphics Pack</h3>
+                                    <p>4K textures for all games</p>
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                                        <span style="color: #ff6b35; font-weight: bold;">₦2,500</span>
+                                        <button class="btn" onclick="downloadMod('Ultra Graphics')" style="padding: 5px 15px; font-size: 12px;">Download</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="game-card">
+                                <div class="game-icon">🎵</div>
+                                <div class="game-info">
+                                    <h3>Sound Enhancement</h3>
+                                    <p>Premium audio overhaul</p>
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                                        <span style="color: #ff6b35; font-weight: bold;">₦1,500</span>
+                                        <button class="btn" onclick="downloadMod('Sound Enhancement')" style="padding: 5px 15px; font-size: 12px;">Download</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="store-themes" class="store-category hidden">
+                        <h3>🎨 Console Themes</h3>
+                        <div class="games-grid">
+                            <div class="game-card">
+                                <div class="game-icon">🌌</div>
+                                <div class="game-info">
+                                    <h3>Cyberpunk Theme</h3>
+                                    <p>Futuristic neon interface</p>
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                                        <span style="color: #ff6b35; font-weight: bold;">₦500</span>
+                                        <button class="btn" onclick="downloadTheme('Cyberpunk')" style="padding: 5px 15px; font-size: 12px;">Download</button>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+
+                <!-- Social Section -->
+                <div id="social-content" class="hidden">
+                    <h2>👥 Social Hub</h2>
+                    
+                    <div class="social-options" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin: 20px 0;">
+                        <button class="btn" onclick="createParty()" style="padding: 20px; background: #9146ff;">
+                            🎉 Create Party<br><small>Invite friends to play</small>
+                        </button>
+                        <button class="btn" onclick="joinParty()" style="padding: 20px; background: #10b981;">
+                            🚪 Join Party<br><small>Join friends' games</small>
+                        </button>
+                        <button class="btn" onclick="sendMessage()" style="padding: 20px; background: #3b82f6;">
+                            💬 Message Friends<br><small>Chat with your crew</small>
+                        </button>
+                        <button class="btn" onclick="shareAchievement()" style="padding: 20px; background: #f59e0b;">
+                            🏆 Share Trophy<br><small>Show off achievements</small>
+                        </button>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                        <div>
+                            <h3>🟢 Recent Friends</h3>
+                            <div id="recentFriends" style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px;">
+                                <div class="friend-item" style="display: flex; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                                    <div style="width: 10px; height: 10px; background: #10b981; border-radius: 50%; margin-right: 15px;"></div>
+                                    <div>
+                                        <strong>Alex_Gamer23</strong>
+                                        <div style="font-size: 12px; opacity: 0.7;">Playing FIFA 24</div>
+                                    </div>
+                                    <button class="btn" onclick="inviteToParty('Alex_Gamer23')" style="margin-left: auto; padding: 5px 10px; font-size: 12px;">Invite</button>
+                                </div>
+                                <div class="friend-item" style="display: flex; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                                    <div style="width: 10px; height: 10px; background: #10b981; border-radius: 50%; margin-right: 15px;"></div>
+                                    <div>
+                                        <strong>Sarah_Pro</strong>
+                                        <div style="font-size: 12px; opacity: 0.7;">Playing Call of Duty</div>
+                                    </div>
+                                    <button class="btn" onclick="inviteToParty('Sarah_Pro')" style="margin-left: auto; padding: 5px 10px; font-size: 12px;">Invite</button>
+                                </div>
+                                <div class="friend-item" style="display: flex; align-items: center; padding: 10px 0;">
+                                    <div style="width: 10px; height: 10px; background: #10b981; border-radius: 50%; margin-right: 15px;"></div>
+                                    <div>
+                                        <strong>Mike_Legend</strong>
+                                        <div style="font-size: 12px; opacity: 0.7;">In Mega TV Live</div>
+                                    </div>
+                                    <button class="btn" onclick="watchStream('Mike_Legend')" style="margin-left: auto; padding: 5px 10px; font-size: 12px;">Watch</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3>⭐ Friend Achievements</h3>
+                            <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px;">
+                                <div style="display: flex; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                                    <div style="font-size: 1.5em; margin-right: 15px;">🏆</div>
+                                    <div>
+                                        <strong>Alex_Gamer23</strong> unlocked <span style="color: gold;">"Hat Trick Hero"</span>
+                                        <div style="font-size: 12px; opacity: 0.7;">2 hours ago • FIFA 24</div>
+                                    </div>
+                                </div>
+                                <div style="display: flex; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                                    <div style="font-size: 1.5em; margin-right: 15px;">🥇</div>
+                                    <div>
+                                        <strong>Sarah_Pro</strong> earned <span style="color: gold;">"Headshot Master"</span>
+                                        <div style="font-size: 12px; opacity: 0.7;">5 hours ago • Call of Duty</div>
+                                    </div>
+                                </div>
+                                <div style="display: flex; align-items: center; padding: 10px 0;">
+                                    <div style="font-size: 1.5em; margin-right: 15px;">⚡</div>
+                                    <div>
+                                        <strong>Mike_Legend</strong> got <span style="color: gold;">"Speed Runner"</span>
+                                        <div style="font-size: 12px; opacity: 0.7;">1 day ago • Elden Ring</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 30px;">
+                        <h3>💬 Party Chat</h3>
+                        <div id="partyChatBox" style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px; height: 200px; overflow-y: auto;">
+                            <p style="text-align: center; opacity: 0.5; padding: 50px;">No active party. Create or join a party to start chatting!</p>
+                        </div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <input type="text" id="chatInput" placeholder="Type your message..." style="flex: 1; padding: 10px; border: none; border-radius: 20px; background: rgba(255,255,255,0.1); color: white;">
+                            <button class="btn" onclick="sendChatMessage()" style="padding: 10px 20px;">Send</button>
+                        </div>
+                    </div>
+                </div>
+
+                 <!-- Creator Section -->
+                 <div id="creator-content" class="hidden">
+                    <h2>🎬 Become a Creator</h2>
+                    <p style="margin-bottom: 30px;">Choose your entertainment experience</p>
+                    
+                    <div class="creator-options" style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px;">
+                        <div class="creator-card" onclick="openStreaming()" style="background: linear-gradient(135deg, #e50914, #b81d24); padding: 40px; border-radius: 20px; cursor: pointer; text-align: center; transition: transform 0.3s ease;">
+                            <div style="font-size: 4em; margin-bottom: 20px;">📺</div>
+                            <h3>TV & Movies</h3>
+                            <p>Access Netflix, YouTube, Prime Video and more streaming platforms</p>
+                            <div style="margin-top: 20px; display: flex; justify-content: center; gap: 10px;">
+                                <span style="background: rgba(0,0,0,0.3); padding: 5px 10px; border-radius: 15px; font-size: 12px;">Netflix</span>
+                                <span style="background: rgba(0,0,0,0.3); padding: 5px 10px; border-radius: 15px; font-size: 12px;">YouTube</span>
+                                <span style="background: rgba(0,0,0,0.3); padding: 5px 10px; border-radius: 15px; font-size: 12px;">Prime Video</span>
+                            </div>
+                        </div>
+                        
+                        <div class="creator-card" onclick="openMegaTV()" style="background: linear-gradient(135deg, #9146ff, #6441a5); padding: 40px; border-radius: 20px; cursor: pointer; text-align: center; transition: transform 0.3s ease;">
+                            <div style="font-size: 4em; margin-bottom: 20px;">🎮</div>
+                            <h3>Become a Creator</h3>
+                            <p>Join Mega TV - Stream gameplay, create content, build your gaming community</p>
+                            <div style="margin-top: 20px; display: flex; justify-content: center; gap: 10px;">
+                                <span style="background: rgba(0,0,0,0.3); padding: 5px 10px; border-radius: 15px; font-size: 12px;">Live Stream</span>
+                                <span style="background: rgba(0,0,0,0.3); padding: 5px 10px; border-radius: 15px; font-size: 12px;">Upload</span>
+                                <span style="background: rgba(0,0,0,0.3); padding: 5px 10px; border-radius: 15px; font-size: 12px;">Monetize</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mega TV Interface (Initially Hidden) -->
+                    <div id="megatv-interface" class="hidden">
+                        <button class="btn" style="margin-bottom:15px;" onclick="goBackFromMegaTV()">⬅ Back</button>
+
+                        <div class="megatv-login" id="megatvLogin" style="background: rgba(0,0,0,0.8); padding: 30px; border-radius: 15px; text-align: center; margin-bottom: 30px;">
+                            <h3>🎮 Welcome to Mega TV</h3>
+                            <p>Your gaming content creation hub</p>
+                            <div class="form-group">
+                                <input type="text" id="creatorUsername" placeholder="Choose your creator name" style="width: 300px; max-width: 100%;">
+                            </div>
+                            <div class="form-group">
+                                <textarea id="creatorBio" placeholder="Tell viewers about your gaming style..." style="width: 300px; max-width: 100%; height: 80px; resize: vertical;"></textarea>
+                            </div>
+                            <button class="btn" onclick="setupMegaTV()">🚀 Start Creating</button>
+                        </div>
+
+                        <div id="megatv-dashboard" class="hidden">
+                            <div class="creator-header" style="background: linear-gradient(45deg, #9146ff, #6441a5); padding: 20px; border-radius: 15px; margin-bottom: 30px;">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <h3>🎮 <span id="creatorName">Creator</span>'s Studio</h3>
+                                        <p>Last posted: <span id="lastPosted">Never</span> • Account Status: <span id="accountStatus" style="color: #10b981;">Active</span></p>
+                                    </div>
+                                    <div style="text-align: right;">
+                                        <div style="font-size: 1.2em; font-weight: bold;"><span id="followerCount">0</span> Followers</div>
+                                        <div style="font-size: 0.9em; opacity: 0.8;"><span id="viewCount">0</span> Total Views</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px;">
+                                <div>
+                                    <h3>📹 Create Content</h3>
+                                    <div class="content-options" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0;">
+                                        <button class="btn" onclick="startLiveStream()" style="padding: 20px; background: #ff4444;">
+                                            🔴 Go Live<br><small>Stream your gameplay</small>
+                                        </button>
+                                        <button class="btn" onclick="uploadVideo()" style="padding: 20px; background: #4444ff;">
+                                            📤 Upload Video<br><small>Share recorded content</small>
+                                        </button>
+                                        <button class="btn" onclick="createClip()" style="padding: 20px; background: #44ff44;">
+                                            ✂️ Create Clip<br><small>Highlight moments</small>
+                                        </button>
+                                        <button class="btn" onclick="collaborateStream()" style="padding: 20px; background: #ff44ff;">
+                                            👥 Collab Stream<br><small>Stream with friends</small>
+                                        </button>
+                                    </div>
+
+                                    <h3>📊 Your Content</h3>
+                                    <div id="userContent" style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px; margin-top: 15px;">
+                                        <p style="text-align: center; opacity: 0.7; padding: 40px;">
+                                            🎬 No content yet! Start creating to build your audience.
+                                            <br><small>Remember: Post within 90 days to keep your account active!</small>
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <h3>⚠️ Account Reminder</h3>
+                                    <div style="background: rgba(255, 165, 0, 0.2); border: 1px solid orange; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                                        <p><strong>Days until ban: <span id="daysLeft">90</span></strong></p>
+                                        <p style="font-size: 12px;">Post content to reset your 90-day timer</p>
+                                    </div>
+
+                                    <h3>🎯 Creator Tips</h3>
+                                    <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px;">
+                                        <ul style="list-style: none; padding: 0;">
+                                            <li style="margin: 10px 0;">💡 Stream popular games for more viewers</li>
+                                            <li style="margin: 10px 0;">🗣️ Engage with your chat actively</li>
+                                            <li style="margin: 10px 0;">📅 Maintain consistent schedule</li>
+                                            <li style="margin: 10px 0;">🔧 Use good quality mic & camera</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Customize Console Section -->
+                <div id="settings-content" class="hidden">
+                    <h2>⚙️ Customize Console</h2>
+                    
+                    <div style="display: flex; gap: 10px; margin: 20px 0; flex-wrap: wrap;">
+                        <button class="tab-button active" onclick="showSettingsTab('notifications')">🔔 Notifications</button>
+                        <button class="tab-button" onclick="showSettingsTab('guide')">📖 User Guide</button>
+                        <button class="tab-button" onclick="showSettingsTab('accessibility')">♿ Accessibility</button>
+                        <button class="tab-button" onclick="showSettingsTab('themes')">🎨 Themes</button>
+                        <button class="tab-button" onclick="showSettingsTab('account')">👤 Account</button>
+                        <button class="tab-button" onclick="showSettingsTab('security')">🔒 Security</button>
+                        <button class="tab-button" onclick="showSettingsTab('storage')">💾 Storage</button>
+                        <button class="tab-button" onclick="showSettingsTab('datetime')">🕐 Date & Time</button>
+                        <button class="tab-button" onclick="showSettingsTab('updates')">🔄 Updates</button>
+                        <button class="tab-button" onclick="showSettingsTab('devices')">📱 Devices</button>
+                        <button class="tab-button" onclick="showSettingsTab('network')">🌐 Network</button>
+                        <button class="tab-button" onclick="showSettingsTab('complaint')">📞 Complaint</button>
+                    </div>
+
+                    <!-- Notifications Settings -->
+                    <div id="settings-notifications" class="settings-content">
+                        <div class="settings-group">
+                            <h3>🔔 Notification Settings</h3>
+                            <div class="setting-item">
+                                <span>Game Updates</span>
+                                <div class="toggle-switch active" onclick="toggleSetting(this)"></div>
+                            </div>
+                            <div class="setting-item">
+                                <span>Friend Activity</span>
+                                <div class="toggle-switch active" onclick="toggleSetting(this)"></div>
+                            </div>
+                            <div class="setting-item">
+                                <span>Achievement Notifications</span>
+                                <div class="toggle-switch active" onclick="toggleSetting(this)"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Storage Settings with Buy Storage Feature -->
+                    <div id="settings-storage" class="settings-content hidden">
+                        <div class="settings-group">
+                            <h3>💾 Storage Management</h3>
+                            <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px; margin: 15px 0;">
+                                <h4>Current Storage</h4>
+                                <div style="background: rgba(0,0,0,0.3); height: 20px; border-radius: 10px; margin: 10px 0; overflow: hidden;">
+                                    <div style="background: linear-gradient(90deg, #ff6b35, #f7931e); height: 100%; width: 24.7%; border-radius: 10px;"></div>
+                                </div>
+                                <p>247 GB / 1 TB used (24.7%)</p>
+                                
+                                <h4 style="margin-top: 20px;">💰 Buy More Storage</h4>
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 15px 0;">
+                               
+
+    <button class="btn" onclick="buyStorage(100)">+100 GB (₦2000)</button>
+    <button class="btn" onclick="buyStorage(250)">+250 GB (₦5000)</button>
+    <button class="btn" onclick="buyStorage(500)">+500 GB (₦8000)</button>
+    <button class="btn" onclick="buyStorage(1024)">+1 TB (₦12000)</button>
+
+</div>
+
+<!-- Progress bar (give it IDs so JS can update) -->
+<div style="background: rgba(0,0,0,0.3); height: 20px; border-radius: 10px; margin: 10px 0; overflow: hidden;">
+    <div id="storageBar" style="background: linear-gradient(90deg, #ff6b35, #f7931e); height: 100%; width: 24.7%; border-radius: 10px;"></div>
+</div>
+<p id="storageText">247 GB / 1024 GB used (24.7%)</p>
+
+                                </main>
+                            </div>
+                        </div>
+                    
+
+
+              <!-- Context Menu -->                      
+    <div class="context-menu" id="contextMenu">
+        <div class="context-item" onclick="updateGame()">🔄 Update</div>
+        <div class="context-item" onclick="deleteGame()">🗑️ Delete</div>
+        <div class="context-item" onclick="sendToFriend()">📤 Send to Friend</div>
+        <div class="context-item" onclick="modifyGame()">🔧 Modify Game</div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+    <!-- Theme Selection -->
+<div id="settings-theme" class="settings-content hidden">
+    <div class="settings-group">
+        <h3>🎨 Choose Your Theme</h3>
+        <p>Select a theme to customize your console look.</p>
+        
+        <div style="display: flex; gap: 20px; margin-top: 15px;">
+            
+            <!-- Light Theme -->
+            <div class="theme-option" onclick="applyTheme('light')" 
+                 style="width: 100px; height: 100px; background: #f5f5f5; border-radius: 10px; 
+                        display: flex; justify-content: center; align-items: center; 
+                        cursor: pointer; border: 2px solid transparent;">
+                ☀️
+            </div>
+            
+            <!-- Dark Theme -->
+            <div class="theme-option" onclick="applyTheme('dark')" 
+                 style="width: 100px; height: 100px; background: #1a1a1a; color: white; 
+                        border-radius: 10px; display: flex; justify-content: center; 
+                        align-items: center; cursor: pointer; border: 2px solid transparent;">
+                🌙
+            </div>
+            
+            <!-- Neon Theme -->
+            <div class="theme-option" onclick="applyTheme('neon')" 
+                 style="width: 100px; height: 100px; background: linear-gradient(45deg, #ff6b35, #ff00ff); 
+                        border-radius: 10px; display: flex; justify-content: center; align-items: center; 
+                        cursor: pointer; border: 2px solid transparent; color: white;">
+                ⚡
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <script>
+        // User data storage (in real app, this would be in database)
+        let currentUser = null;
+        let userGames = [];
+        let userAchievements = [];
+        let userStats = {
+            gamesPlayed: 0,
+            hoursPlayed: 0,
+            achievementsUnlocked: 0,
+            friendsOnline: 0
+        };
+
+        // Sample games database
+        const gameDatabase = {
+            action: [
+                {name: "God of War", icon: "⚔️", progress: 67, lastPlayed: "2 hours ago", trophies: 15},
+                {name: "Call of Duty", icon: "🔫", progress: 89, lastPlayed: "1 day ago", trophies: 8}
+            ],
+            racing: [
+                {name: "Gran Turismo", icon: "🏎️", progress: 45, lastPlayed: "3 hours ago", trophies: 12},
+                {name: "Need for Speed", icon: "🚗", progress: 78, lastPlayed: "5 days ago", trophies: 6}
+            ],
+            sports: [
+                {name: "FIFA 24", icon: "⚽", progress: 92, lastPlayed: "1 hour ago", trophies: 20},
+                {name: "NBA 2K24", icon: "🏀", progress: 34, lastPlayed: "1 week ago", trophies: 4}
+            ]
+             
+        };
+
+        // Login functionality
+        function completeLogin() {
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            if (!username || !email || !password) {
+                showNotification('Please fill in all fields!', 'error');
+                return;
+            }
+
+            currentUser = {
+                username: username,
+                email: email,
+                isFirstTime: true
+            };
+
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('setupScreen').classList.remove('hidden');
+        }
+        // Function to handle login
+function completeLogin() {
+    const username = document.getElementById("username").value;
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    const rememberMe = document.getElementById("rememberMe")?.checked || false;;
+
+    if (!username || !email || !password) {
+        alert("Please fill in all fields!");
+        return;
+    }
+
+    // Save to localStorage if "Remember Me" is checked
+    if (rememberMe) {
+        localStorage.setItem("savedUsername", username);
+        localStorage.setItem("savedEmail", email);
+    } else {
+        localStorage.removeItem("savedUsername");
+        localStorage.removeItem("savedEmail");
+    }
+    currentUser = {
+        username: username,
+        email: email,
+        isFirstTime: true
+    };
+
+    // Hide login, show setup
+    document.getElementById("loginScreen").classList.add("hidden");
+    document.getElementById("setupScreen").classList.remove("hidden");
+}
+
+// Function to auto-fill saved login
+window.onload = function() {
+    const savedUsername = localStorage.getItem("savedUsername");
+    const savedEmail = localStorage.getItem("savedEmail");
+
+    if (savedUsername && savedEmail) {
+        document.getElementById("username").value = savedUsername;
+        document.getElementById("email").value = savedEmail;
+        document.getElementById("rememberMe").checked = true;
+    }
+};
+
+
+        // Game selection for new users
+        let selectedGenres = [];
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.game-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    this.classList.toggle('selected');
+                    const genre = this.dataset.game;
+                    if (selectedGenres.includes(genre)) {
+                        selectedGenres = selectedGenres.filter(g => g !== genre);
+                    } else {
+                        selectedGenres.push(genre);
+                    }
+                });
+            });
+        });
+
+        function completeSetup() {
+            if (selectedGenres.length === 0) {
+                showNotification('Please select at least one game genre!', 'error');
+                return;
+            }
+
+            // Generate personalized game library
+            userGames = [];
+            selectedGenres.forEach(genre => {
+                if (gameDatabase[genre]) {
+                    userGames.push(...gameDatabase[genre]);
+                }
+            });
+
+            // Generate initial stats
+            userStats = {
+                gamesPlayed: userGames.length,
+                hoursPlayed: Math.floor(Math.random() * 300) + 50,
+                achievementsUnlocked: userGames.reduce((total, game) => total + game.trophies, 0),
+                friendsOnline: Math.floor(Math.random() * 15) + 3
+            };
+
+            document.getElementById('setupScreen').classList.add('hidden');
+            document.getElementById('mainInterface').style.display = 'block';
+            
+            initializeInterface();
+            showNotification('Welcome to Mega Consoles! 🎮', 'success');
+        }
+
+        function initializeInterface() {
+            // Set user info
+            document.getElementById('displayUsername').textContent = currentUser.username;
+            document.getElementById('welcomeUsername').textContent = currentUser.username;
+            document.getElementById('trophyCount').textContent = userStats.achievementsUnlocked;
+            
+            // Update stats
+            document.getElementById('gamesPlayed').textContent = userStats.gamesPlayed;
+            document.getElementById('hoursPlayed').textContent = userStats.hoursPlayed;
+            document.getElementById('achievementsUnlocked').textContent = userStats.achievementsUnlocked;
+            document.getElementById('friendsOnline').textContent = userStats.friendsOnline;
+            
+            // Populate all sections
+            populateRecentGames();
+            populateAllGames();
+            populateAchievements();
+            populateSocialContent();
+            updateTime();
+            setInterval(updateTime, 1000);
+            
+            // Make sure home section is active by default
+            showSection('home');
+        }
+
+        function populateRecentGames() {
+            const container = document.getElementById('recentGames');
+            const recentGames = userGames.slice(0, 6); // Show first 6 games
+            
+            container.innerHTML = recentGames.map(game => `
+                <div class="game-card" oncontextmenu="showContextMenu(event, '${game.name}')">
+                    <div class="game-icon">${game.icon}</div>
+                    <div class="game-info">
+                        <h3>${game.name}</h3>
+                        <small>Last played: ${game.lastPlayed}</small>
+                        <div class="game-progress">
+                            <div class="progress-bar" style="width: ${game.progress}%"></div>
+                        </div>
+                        <small>${game.progress}% complete • ${game.trophies} trophies</small>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function populateAllGames() {
+            const container = document.getElementById('allGames');
+            container.innerHTML = userGames.map(game => `
+                <div class="game-card" oncontextmenu="showContextMenu(event, '${game.name}')">
+                    <div class="game-icon">${game.icon}</div>
+                    <div class="game-info">
+                        <h3>${game.name}</h3>
+                        <small>Last played: ${game.lastPlayed}</small>
+                        <div class="game-progress">
+                            <div class="progress-bar" style="width: ${game.progress}%"></div>
+                        </div>
+                        <small>${game.progress}% complete • ${game.trophies} trophies</small>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function populateAchievements() {
+            const container = document.getElementById('achievementsList');
+            const achievements = [
+                {name: "First Steps", desc: "Completed your first game", icon: "👶", rarity: "Common"},
+                {name: "Speed Runner", desc: "Finished a game in under 5 hours", icon: "⚡", rarity: "Rare"},
+                {name: "Trophy Hunter", desc: "Unlocked 50 trophies", icon: "🏆", rarity: "Epic"},
+                {name: "Social Gamer", desc: "Played with 10 friends", icon: "👥", rarity: "Uncommon"}
+            ];
+
+            container.innerHTML = achievements.map(achievement => `
+                <div class="achievement-item">
+                    <div class="achievement-icon">${achievement.icon}</div>
+                    <div>
+                        <h4>${achievement.name}</h4>
+                        <p>${achievement.desc}</p>
+                        <small style="color: #ff6b35;">${achievement.rarity}</small>
+                    </div>
+                </div>
+            `).join('');
+
+            // Also populate recent achievements on home
+            document.getElementById('recentAchievements').innerHTML = achievements.slice(0, 3).map(achievement => `
+                <div class="achievement-item">
+                    <div class="achievement-icon">${achievement.icon}</div>
+                    <div>
+                        <h4>${achievement.name}</h4>
+                        <p>${achievement.desc}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Navigation
+        function showSection(section) {
+            // Hide all content sections
+            document.querySelectorAll('[id$="-content"]').forEach(el => {
+                el.classList.add('hidden');
+            });
+            
+            // Show selected section
+            document.getElementById(section + '-content').classList.remove('hidden');
+            
+            // Update navigation - find the clicked nav item
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Add active class to the correct nav item
+            const activeNavItem = Array.from(document.querySelectorAll('.nav-item')).find(item => 
+                item.textContent.toLowerCase().includes(section.toLowerCase()) ||
+                (section === 'home' && item.textContent.includes('Home')) ||
+                (section === 'games' && item.textContent.includes('Your Games')) ||
+                (section === 'achievements' && item.textContent.includes('Achievements')) ||
+                (section === 'store' && item.textContent.includes('Mega Store')) ||
+                (section === 'creator' && item.textContent.includes('Creator')) ||
+                (section === 'social' && item.textContent.includes('Social')) ||
+                (section === 'settings' && item.textContent.includes('Customize'))
+            );
+            
+            if (activeNavItem) {
+                activeNavItem.classList.add('active');
+            }
+        }
+
+        // Context menu for games
+        function showContextMenu(event, gameName) {
+            event.preventDefault();
+            const contextMenu = document.getElementById('contextMenu');
+            contextMenu.style.display = 'block';
+            contextMenu.style.left = event.pageX + 'px';
+            contextMenu.style.top = event.pageY + 'px';
+            contextMenu.dataset.gameName = gameName;
+        }
+
+        // Hide context menu when clicking elsewhere
+        document.addEventListener('click', function() {
+            document.getElementById('contextMenu').style.display = 'none';
+        });
+
+        // Context menu actions
+        function updateGame() {
+            const gameName = document.getElementById('contextMenu').dataset.gameName;
+            showNotification(`Updating ${gameName}...`, 'info');
+        }
+
+        function deleteGame() {
+            const gameName = document.getElementById('contextMenu').dataset.gameName;
+            if (confirm(`Are you sure you want to delete ${gameName}?`)) {
+                showNotification(`${gameName} deleted successfully`, 'success');
+                // Remove from userGames array and refresh display
+                userGames = userGames.filter(game => game.name !== gameName);
+                populateRecentGames();
+                populateAllGames();
+            }
+        }
+
+        function sendToFriend() {
+            const gameName = document.getElementById('contextMenu').dataset.gameName;
+            const friendName = prompt('Enter friend\'s username:');
+            if (friendName) {
+                showNotification(`${gameName} sent to ${friendName}! They can download it now.`, 'success');
+            }
+        }
+
+        function modifyGame() {
+            const gameName = document.getElementById('contextMenu').dataset.gameName;
+            showNotification(`Opening Mega Store for ${gameName} mods...`, 'info');
+            // Simulate opening mod store
+            setTimeout(() => {
+                showSection('store');
+                document.getElementById('store-content').innerHTML = `
+                    <h2>🛒 Mega Store - ${gameName} Mods</h2>
+                    <div class="games-grid">
+                        <div class="game-card">
+                            <div class="game-icon">🎨</div>
+                            <div class="game-info">
+                                <h3>Graphics Enhancement Mod</h3>
+                                <p>Ultra HD textures and lighting</p>
+                                <button class="btn" onclick="downloadMod('Graphics Enhancement')">Download - Free</button>
+                            </div>
+                        </div>
+                        <div class="game-card">
+                            <div class="game-icon">🎵</div>
+                            <div class="game-info">
+                                <h3>Sound Pack Mod</h3>
+                                <p>Professional audio overhaul</p>
+                                <button class="btn" onclick="downloadMod('Sound Pack')">Download - $2</button>
+                            </div>
+                        </div>
+                        <div class="game-card">
+                            <div class="game-icon">🏎️</div>
+                            <div class="game-info">
+                                <h3>Performance Boost</h3>
+                                <p>Optimize for 60+ FPS</p>
+                                <button class="btn" onclick="downloadMod('Performance Boost')">Download - $1</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }, 1000);
+        }
+        
+
+        function downloadMod(modName) {
+            showNotification(`${modName} mod downloaded and installed!`, 'success');
+        }
+        function goBackToStore() {
+    document.getElementById("modsSection").classList.add("hidden");
+    document.getElementById("store-content").classList.remove("hidden");
+}
+       
+        // Settings functionality
+        function toggleSetting(element) {
+            element.classList.toggle('active');
+            const settingName = element.parentElement.querySelector('span').textContent;
+            const isActive = element.classList.contains('active');
+            showNotification(`${settingName} ${isActive ? 'enabled' : 'disabled'}`, 'info');
+        }
+
+        // Time display
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-US', { 
+                hour12: false,
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            const timeElement = document.getElementById('currentTime');
+            if (timeElement) {
+                timeElement.textContent = timeString;
+            }
+        }
+
+        // Notification system
+        function showNotification(message, type = 'info') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification show ${type}`;
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Logout functionality
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                currentUser = null;
+                userGames = [];
+                userAchievements = [];
+                document.getElementById('mainInterface').style.display = 'none';
+                document.getElementById('loginScreen').classList.remove('hidden');
+                document.getElementById('setupScreen').classList.add('hidden');
+                
+                // Reset form
+                document.getElementById('username').value = '';
+                document.getElementById('email').value = '';
+                document.getElementById('password').value = '';
+                
+                showNotification('Logged out successfully', 'success');
+            }
+        }
+
+        // Initialize first section as active
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set home as default active section
+            document.getElementById('home-content').classList.remove('hidden');
+        });
+
+        // Simulate some dynamic features
+        setInterval(() => {
+            if (currentUser && Math.random() < 0.1) { // 10% chance every interval
+                const messages = [
+                    'Friend just came online!',
+                    'New game update available',
+                    'Achievement unlocked by friend!',
+                    'Friend invites you to party,check social hub'
+                    
+                ];
+                const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+                showNotification(randomMessage, 'info');
+            }
+        }, 30000); // Check every 30 seconds
+
+        // Easter egg: Konami code
+        let konamiCode = [];
+        const konamiSequence = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'KeyB', 'KeyA'];
+        
+        document.addEventListener('keydown', function(e) {
+            konamiCode.push(e.code);
+            if (konamiCode.length > konamiSequence.length) {
+                konamiCode.shift();
+            }
+            
+            if (JSON.stringify(konamiCode) === JSON.stringify(konamiSequence)) {
+                showNotification('🎉 MEGA CHEAT ACTIVATED! Unlimited trophies!', 'success');
+                document.getElementById('trophyCount').textContent = '999';
+                document.getElementById('achievementsUnlocked').textContent = '999';
+                konamiCode = [];
+            }
+        });
+
+        // Auto-save user progress (simulation)
+        setInterval(() => {
+            if (currentUser) {
+                console.log('Auto-saving user progress...', {
+                    user: currentUser.username,
+                    games: userGames.length,
+                    trophies: userStats.achievementsUnlocked
+                });
+            }
+        }, 60000); // Save every minute
+        // Open TV & Movies section
+function openStreaming() {
+    // You can make this go to a custom screen or just alert for now
+    alert("📺 TV & Movies section coming soon! Opening streaming hub...");
+    
+    // Example: If you want it to load an iframe or change section
+    // document.getElementById("creator-content").classList.add("hidden");
+    // document.getElementById("streaming-content").classList.remove("hidden");
+}
+
+// Open Mega TV creator interface
+function openMegaTV() {
+    // Hide other creator options
+    document.querySelector(".creator-options").style.display = "none";
+
+    // Show MegaTV login interface
+    document.getElementById("megatv-interface").classList.remove("hidden");
+    document.getElementById("megatvLogin").classList.remove("hidden");
+    document.getElementById("megatv-dashboard").classList.add("hidden");
+}
+
+// Set up Mega TV after login
+function setupMegaTV() {
+    const creatorName = document.getElementById("creatorUsername").value.trim();
+    const creatorBio = document.getElementById("creatorBio").value.trim();
+
+    if (!creatorName) {
+        alert("Please enter your creator name!");
+        return;
+    }
+
+    // Save data (localStorage for now)
+    localStorage.setItem("creatorName", creatorName);
+    localStorage.setItem("creatorBio", creatorBio);
+    localStorage.setItem("lastPosted", "Never");
+    localStorage.setItem("followerCount", 0);
+    localStorage.setItem("viewCount", 0);
+
+    // Update dashboard display
+    document.getElementById("creatorName").textContent = creatorName;
+    document.getElementById("lastPosted").textContent = "Never";
+    document.getElementById("followerCount").textContent = "0";
+    document.getElementById("viewCount").textContent = "0";
+
+    // Hide login, show dashboard
+    document.getElementById("megatvLogin").classList.add("hidden");
+    document.getElementById("megatv-dashboard").classList.remove("hidden");
+}
+
+// Load saved MegaTV data on refresh
+window.addEventListener("load", function() {
+    const savedName = localStorage.getItem("creatorName");
+    const savedBio = localStorage.getItem("creatorBio");
+
+    if (savedName) {
+        document.getElementById("creatorName").textContent = savedName;
+        document.getElementById("creatorBio").value = savedBio || "";
+        document.getElementById("followerCount").textContent = localStorage.getItem("followerCount") || "0";
+        document.getElementById("viewCount").textContent = localStorage.getItem("viewCount") || "0";
+        document.getElementById("lastPosted").textContent = localStorage.getItem("lastPosted") || "Never";
+
+        document.querySelector(".creator-options").style.display = "none";
+        document.getElementById("megatv-interface").classList.remove("hidden");
+        document.getElementById("megatvLogin").classList.add("hidden");
+        document.getElementById("megatv-dashboard").classList.remove("hidden");
+    }
+});
+function goBackFromMegaTV() {
+   document.querySelector(".creator-options").style.display = "grid";
+    document.getElementById("megatv-interface").classList.add("hidden");
+}
+
+// Initial storage values
+let usedStorage = 247;   // GB
+let totalStorage = 1024; // GB
+
+// Function to update storage UI
+function updateStorageUI() {
+    const percent = ((usedStorage / totalStorage) * 100).toFixed(1);
+    document.getElementById("storageBar").style.width = percent + "%";
+    document.getElementById("storageText").textContent =
+        `${usedStorage} GB / ${totalStorage} GB used (${percent}%)`;
+}
+
+// Function to "buy" storage
+function buyStorage(extraGB) {
+    totalStorage += extraGB;
+    updateStorageUI();
+    alert(`🎉 You successfully bought +${extraGB} GB!`);
+}
+
+// Run once on load
+document.addEventListener("DOMContentLoaded", updateStorageUI);
+
+// Function to switch settings tab
+function showSetting(setting) {
+    // Hide all settings contents
+    document.querySelectorAll(".settings-content").forEach(el => el.classList.add("hidden"));
+
+    // Remove highlight from all tabs
+    document.querySelectorAll(".settings-tab").forEach(tab => tab.classList.remove("active"));
+
+    // Show the selected setting
+    document.getElementById("settings-" + setting).classList.remove("hidden");
+
+    // Highlight the clicked tab
+    event.target.classList.add("active");
+}
+
+
+// UNIVERSAL BACK BUTTON FUNCTIONALITY
+        let navigationHistory = [];
+
+        function showSection(section) {
+            // Add current section to history before changing
+            const currentSection = getCurrentSection();
+            if (currentSection && currentSection !== section) {
+                navigationHistory.push(currentSection);
+            }
+
+            // Hide all content sections
+            document.querySelectorAll('[id$="-content"]').forEach(el => {
+                el.classList.add('hidden');
+            });
+            
+            // Show selected section
+            document.getElementById(section + '-content').classList.remove('hidden');
+            
+            // Update navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            const activeNavItem = Array.from(document.querySelectorAll('.nav-item')).find(item => 
+                item.textContent.toLowerCase().includes(section.toLowerCase()) ||
+                (section === 'home' && item.textContent.includes('Home')) ||
+                (section === 'games' && item.textContent.includes('Your Games')) ||
+                (section === 'achievements' && item.textContent.includes('Achievements')) ||
+                (section === 'store' && item.textContent.includes('Mega Store')) ||
+                (section === 'creator' && item.textContent.includes('Creator')) ||
+                (section === 'social' && item.textContent.includes('Social')) ||
+                (section === 'settings' && item.textContent.includes('Customize'))
+            );
+            
+            if (activeNavItem) {
+                activeNavItem.classList.add('active');
+            }
+
+            // Show/hide back button
+            updateBackButton();
+        }
+
+        function getCurrentSection() {
+            const visibleSection = document.querySelector('[id$="-content"]:not(.hidden)');
+            return visibleSection ? visibleSection.id.replace('-content', '') : null;
+        }
+
+        function updateBackButton() {
+            const backBtn = document.getElementById('backButton');
+            if (navigationHistory.length > 0) {
+                backBtn.classList.remove('hidden');
+            } else {
+                backBtn.classList.add('hidden');
+            }
+        }
+
+        function goBack() {
+            if (navigationHistory.length > 0) {
+                const previousSection = navigationHistory.pop();
+                
+                // Don't add to history when going back
+                document.querySelectorAll('[id$="-content"]').forEach(el => {
+                    el.classList.add('hidden');
+                });
+                
+                document.getElementById(previousSection + '-content').classList.remove('hidden');
+                
+                // Update nav
+                document.querySelectorAll('.nav-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                const activeNavItem = Array.from(document.querySelectorAll('.nav-item')).find(item => 
+                    item.textContent.toLowerCase().includes(previousSection.toLowerCase()) ||
+                    (previousSection === 'home' && item.textContent.includes('Home')) ||
+                    (previousSection === 'games' && item.textContent.includes('Your Games')) ||
+                    (previousSection === 'achievements' && item.textContent.includes('Achievements')) ||
+                    (previousSection === 'store' && item.textContent.includes('Mega Store')) ||
+                    (previousSection === 'creator' && item.textContent.includes('Creator')) ||
+                    (previousSection === 'social' && item.textContent.includes('Social')) ||
+                    (previousSection === 'settings' && item.textContent.includes('Customize'))
+                );
+                
+                if (activeNavItem) {
+                    activeNavItem.classList.add('active');
+                }
+
+                updateBackButton();
+                playSound('back');
+            }
+        }
+
+        // SOUND SYSTEM
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playSound(type) {
+            let frequency, duration;
+            
+            switch(type) {
+                case 'click':
+                    frequency = 800;
+                    duration = 0.1;
+                    break;
+                case 'success':
+                    frequency = 1000;
+                    duration = 0.15;
+                    break;
+                case 'error':
+                    frequency = 300;
+                    duration = 0.2;
+                    break;
+                case 'back':
+                    frequency = 600;
+                    duration = 0.12;
+                    break;
+                default:
+                    frequency = 500;
+                    duration = 0.1;
+            }
+
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = frequency;
+            oscillator.type = 'sine';
+            
+            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + duration);
+        }
+
+        // Add sound to all buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('btn') || e.target.classList.contains('sound-btn')) {
+                    playSound('click');
+                }
+            });
+        });
+        // SETTINGS FUNCTIONALITY
+        function showSettingsTab(tab) {
+            // Hide all settings content
+            document.querySelectorAll('.settings-content').forEach(el => {
+                el.classList.add('hidden');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            document.getElementById('settings-' + tab).classList.remove('hidden');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+            
+            playSound('click');
+        }
+
+        function applyTheme(theme) {
+            document.querySelectorAll('.theme-option').forEach(option => {
+                option.classList.remove('active');
+
+                option.style.border = '2px solid transparent';
+            });
+            
+            event.target.classList.add('active');
+            event.target.style.border = '2px solid #ff6b35';
+            
+            showNotification(`${theme.charAt(0).toUpperCase() + theme.slice(1)} theme applied!`, 'success');
+            playSound('success');
+        }
+ // SOCIAL HUB ENHANCEMENTS
+        let activeParty = null;
+        let partyMembers = [];
+
+        function createParty() {
+            const partyCode = Math.random().toString(36).substring(2, 8).toUpperCase();
+            activeParty = {
+                code: partyCode,
+                host: currentUser.username,
+                members: [currentUser.username],
+                createdAt: new Date()
+            };
+            
+            showNotification(`Party created! Code: ${partyCode}`, 'success');
+            updatePartyChatBox();
+            playSound('success');
+        }
+
+        function joinParty() {
+            const partyCode = prompt('Enter party code:');
+            if (partyCode && partyCode.length === 6) {
+                activeParty = {
+                    code: partyCode,
+                    host: 'Alex_Gamer23',
+                    members: ['Alex_Gamer23', 'Sarah_Pro', currentUser.username]
+                };
+                showNotification(`Joined party ${partyCode}!`, 'success');
+                updatePartyChatBox();
+                playSound('success');
+            } else if (partyCode) {
+                showNotification('Invalid party code!', 'error');
+                playSound('error');
+            }
+        }
+        
+
+        
+
+
+
+    </script>
+</body>
+</html>
