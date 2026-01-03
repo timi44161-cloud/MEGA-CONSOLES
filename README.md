@@ -14,3 +14,4 @@ Built with:
 - Vanilla JavaScript
 🚀 Live Demo
 - https://timi44161-cloud.github.io/MEGA-CONSOLES/
+<h2 PICTURES h2>
