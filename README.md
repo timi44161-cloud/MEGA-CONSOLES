@@ -15,3 +15,6 @@ Built with:
 🚀 Live Demo
 - https://timi44161-cloud.github.io/MEGA-CONSOLES/
 <h2 PICTURES h2>
+![Dashboard](assets/images/dashboard.png)
+![store](assets/images/store.png)
+![social hub](assets/images/social hub.png)
